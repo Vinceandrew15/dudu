@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Ultimate Collection | V. PREMIUM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #d4af37;
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --light-gray: #f5f5f7;
+            --soft-pink: #fff0f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; }
+
+        /* Navigation Bar */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%; border-bottom: 1px solid #eee;
+            position: sticky; top: 0; background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(10px); z-index: 100;
+        }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; letter-spacing: 1px; }
+        .nav-links { display: flex; gap: 15px; align-items: center; }
+        .nav-btn {
+            text-decoration: none; color: var(--text); font-size: 0.75rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px;
+            border: 1px solid #ddd; border-radius: 50px; transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .nav-btn:hover { background-color: var(--text); color: white; transform: translateY(-2px); }
+
+        /* Main Product Section */
+        .product-container {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+            padding: 60px 10%; max-width: 1400px; margin: 0 auto; align-items: start;
+        }
+
+        /* Gallery Styling */
+        .product-gallery { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+        .main-img {
+            background: var(--light-gray); border-radius: 12px; overflow: hidden;
+            border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: relative; width: 100%; display: flex; align-items: center; justify-content: center;
+        }
+        .main-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
+        .main-img:hover img { transform: scale(1.05); }
+
+        /* Right Info Section */
+        .product-details { display: flex; flex-direction: column; padding-top: 20px; }
+        .category { text-transform: uppercase; color: #888; font-size: 0.75rem; letter-spacing: 2px; margin-bottom: 10px; }
+        h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 15px; color: var(--text); line-height: 1.1; }
+        .price { font-size: 1.5rem; color: var(--accent); margin-bottom: 25px; font-weight: 600; }
+        .description { line-height: 1.8; color: #555; margin-bottom: 30px; font-size: 1.05rem; }
+
+        .specs { border-top: 1px solid #eee; padding-top: 25px; margin-bottom: 35px; }
+        .spec-item { display: flex; margin-bottom: 12px; font-size: 0.95rem; }
+        .spec-label { font-weight: 600; width: 130px; color: var(--text); }
+
+        /* CTA Buttons */
+        .actions { display: flex; gap: 15px; margin-bottom: 40px; }
+        .btn {
+            flex: 1; padding: 20px; border: none; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 2px; font-weight: 600;
+            font-size: 0.85rem; transition: 0.3s; border-radius: 4px; text-align: center;
+        }
+        .btn-primary { background: var(--text); color: white; }
+        .btn-primary:hover { background: #333; box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+
+        /* Express Devotion Section */
+        .special-feature {
+            grid-column: 1 / -1; margin-top: 40px; border-top: 1px solid #eee;
+            padding: 80px 10%; text-align: center; background: var(--light-gray);
+            border-radius: 12px;
+        }
+        .special-feature h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 20px; }
+        .special-feature p { max-width: 600px; margin: 0 auto 30px; color: #666; font-style: italic; }
+
+        /* Success Overlay */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.92); display: none; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 1000;
+            color: white; text-align: center; backdrop-filter: blur(12px); padding: 20px;
+        }
+        .floating-heart { font-size: 5rem; animation: float 2.5s infinite ease-in-out; margin-bottom: 20px; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        @media (max-width: 900px) {
+            .product-container { grid-template-columns: 1fr; padding: 40px 5%; }
+            .product-gallery { order: 1; }
+            .product-details { order: 2; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">V. PREMIUM</div>
+        <div class="nav-links">
+            <a href="ourstory.html" class="nav-btn">Our Story</a>        
+            <a href="collection.html" class="nav-btn">Collection</a>
+        </div>
+    </nav>
+
+    <main class="product-container">
+        <section class="product-gallery">
+            <div class="main-img" style="aspect-ratio: 1/1;">
+                <img src="pic/dudam_3.jpg" alt="Us Main">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="main-img" style="aspect-ratio: 4/5;">
+                    <img src="pic/dudam_1.jpg" alt="Memory 1">
+                </div>
+                <div class="main-img" style="aspect-ratio: 4/5;">
+                    <img src="pic/dudam_4.jpg" alt="Memory 2">
+                </div>
+            </div>
+        </section>
+
+        <section class="product-details">
+            <p class="category">Limited Edition | One of a Kind</p>
+            <h1>My Whole Heart</h1>
+            <p class="price">Priceless</p>
+
+            <p class="description">
+                Expertly crafted over many shared moments, this exclusive commitment features 100% genuine affection, a built-in support system, and a lifetime warranty on happiness. 
+            </p>
+
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">Material</span> <span>Pure Sincerity & Dreams</span></div>
+                <div class="spec-item"><span class="spec-label">Foundation</span> <span>Through Jehovah's Love</span></div>
+                <div class="spec-item"><span class="spec-label">Origin</span> <span>Deeply from me to you</span></div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" onclick="showSuccess()">Add to Life</button>
+            </div>
+        </section>
+
+        <section class="special-feature">
+            <span class="category">Premium Service</span>
+            <h2>Express Devotion</h2>
+            <p>"Through Jehovah's love, I found love in you too. This is a direct line to your heart."</p>
+            
+            <button id="loveBtn" class="btn btn-primary" style="max-width: 320px; margin: 0 auto; display: block;" onclick="sendLoveEmail()">
+                Send "I Love You" to Gmail
+            </button>
+            
+            <p id="statusMsg" style="margin-top: 20px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); display: none; font-weight: 600;">
+                Message Dispatched via Premium Courier...
+            </p>
+        </section>
+    </main>
+
+    <div id="overlay">
+        <div class="floating-heart">❤️</div>
+        <h1 style="color: var(--accent); margin-bottom: 10px;">Order Confirmed!</h1>
+        <p style="font-style: italic; font-size: 1.2rem; opacity: 0.9;">"You have successfully added my love to your heart."</p>
+        <button class="btn" style="background: transparent; border: 1px solid white; color: white; margin-top: 30px; max-width: 200px;" onclick="hideSuccess()">Return</button>
+    </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+    
+        // --- 1. Initialize EmailJS ---
+        (function(){
+            // FIXED: Added quotes around the public key
+            emailjs.init("HDdgFpnelrQkSqEew"); 
+        })();
+
+        // --- 2. Send Email Function ---
+        function sendLoveEmail() {
+            const btn = document.getElementById('loveBtn');
+            const status = document.getElementById('statusMsg');
+
+            btn.innerText = "Processing...";
+            btn.disabled = true;
+
+            const templateParams = {
+                to_name: "Jornadette Cos",
+                // Note: Ensure your EmailJS template uses {{to_name}} and {{message}} variables
+                message: "This is a premium notification: I love you more than words can express. Found through Jehovah's love, kept in my heart forever."
+            };
+
+            // Using your specific Service ID and Template ID
+            emailjs.send('dudam', 'template_k3ztujo', templateParams)
+                .then(function() {
+                    status.style.display = 'block';
+                    status.innerText = "Delivered to her Inbox";
+                    btn.innerText = "Sent Successfully";
+                    btn.style.background = "#d4af37";
+                    btn.style.color = "#000";
+                }, function(error) {
+                    btn.innerText = "Error: Check Console";
+                    btn.disabled = false;
+                    console.error("EmailJS Error:", error);
+                    alert("Submission failed. Make sure 'dudam' is the Service ID and 'template_k3ztujo' is the Template ID in your dashboard.");
+                });
+        }
+
+        // --- 3. Overlay Logic ---
+        function showSuccess() {
+            document.getElementById('overlay').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        function hideSuccess() {
+            document.getElementById('overlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    
+    </script>
+</body>
+</html>

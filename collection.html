@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Collection | V. PREMIUM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #d4af37;
+            --bg: #1a1a1a; /* Dark background to make photos POP */
+            --text: #ffffff;
+            --light-gray: rgba(255, 255, 255, 0.05);
+            --overlay-bg: rgba(0, 0, 0, 0.95);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; }
+
+        /* Initial Loading Screen */
+        #loading {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000; z-index: 2000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 1s ease;
+        }
+        .loader-logo { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--accent); letter-spacing: 2px; margin-bottom: 20px; }
+        .loader-bar { width: 150px; height: 1px; background: rgba(255,255,255,0.1); position: relative; overflow: hidden; }
+        .loader-bar::after { content: ''; display: block; width: 30px; height: 100%; background: var(--accent); position: absolute; left: -30px; animation: load 1s infinite linear; }
+        @keyframes load { to { left: 150px; } }
+
+        /* Navigation */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%; border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: sticky; top: 0; background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(15px); z-index: 100;
+        }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; letter-spacing: 1px; cursor: pointer; color: #fff; text-decoration: none;}
+        .nav-links { display: flex; gap: 15px; align-items: center; }
+        .nav-btn {
+            text-decoration: none; color: #fff; font-size: 0.75rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px;
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: all 0.3s ease;
+            cursor: pointer; background: transparent;
+        }
+        .nav-btn:hover { background-color: #fff; color: #000; border-color: #fff; transform: translateY(-2px); }
+
+        /* Hero Section */
+        .collection-hero { padding: 120px 10% 60px; text-align: center; max-width: 900px; margin: 0 auto; }
+        .collection-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 20px; color: #fff; }
+        .collection-hero p { font-style: italic; color: #aaa; font-size: 1.2rem; line-height: 1.6; border-left: 3px solid var(--accent); padding-left: 20px; display: inline-block; text-align: left; }
+
+        /* Main Collection Grid - Optimized for 93 images */
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Masonry-like stacking */
+            gap: 20px;
+            padding: 0 5% 100px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            background: var(--light-gray);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            cursor: zoom-in;
+            opacity: 0; /* Hidden by default for intersection observer */
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid rgba(255,255,255,0.03);
+            aspect-ratio: 1/1; /* Modern squared look */
+        }
+
+        /* Responsive ratios for masonry feel */
+        .gallery-item:nth-child(3n) { aspect-ratio: 4/5; } /* Tall */
+        .gallery-item:nth-child(4n) { aspect-ratio: 5/4; } /* Wide */
+
+        .gallery-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        /* Item Overlay (e.g., 'View Large') */
+        .gallery-item-info {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: #fff; text-align: center; font-size: 0.7rem; text-transform: uppercase;
+            letter-spacing: 2px; opacity: 0; transition: opacity 0.3s;
+        }
+        .gallery-item:hover .gallery-item-info { opacity: 1; }
+
+        /* Lightbox Overlay for viewing large version */
+        #lightbox {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--overlay-bg); z-index: 1000;
+            display: none; justify-content: center; align-items: center;
+            backdrop-filter: blur(10px); cursor: zoom-out;
+            animation: fadeInLightbox 0.5s ease forwards;
+        }
+        #lightbox img { max-width: 90%; max-height: 90%; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+        .close-lightbox { position: absolute; top: 20px; right: 20px; font-size: 2rem; color: #fff; cursor: pointer; }
+
+        /* Animations */
+        @keyframes fadeInLightbox { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Footer */
+        footer { padding: 60px 5%; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; background: rgba(0,0,0,0.5); }
+        .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 15px; display: block; color: #fff; }
+        .footer-tag { font-size: 0.8rem; color: #777; text-transform: uppercase; letter-spacing: 2px; }
+
+        @media (max-width: 800px) {
+            .collection-hero { padding: 80px 5% 40px; }
+            .collection-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+            .gallery-item:nth-child(n) { aspect-ratio: 1/1; } /* Reset aspect ratio on mobile for clean look */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loading">
+        <span class="loader-logo">V. PREMIUM</span>
+        <div class="loader-bar"></div>
+        <p style="color: #444; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px;">Establishing Connection</p>
+    </div>
+
+    <nav>
+        <a href="index.html" class="logo">V. PREMIUM</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-btn">Home</a>
+            <a href="ourstory.html" class="nav-btn">Our Story</a>
+        </div>
+    </nav>
+
+    <main id="collection-page">
+        <section class="collection-hero">
+            <h1>The Dudam Archive</h1>
+            <p>"A curated sequence.<br>Ninety-three proofs of perfection."</p>
+        </section>
+
+        <section class="collection-grid" id="galleryContainer">
+        </section>
+    </main>
+
+    <div id="lightbox" onclick="closeLightbox()">
+        <span class="close-lightbox">&times;</span>
+        <img id="lightboxImg" src="" alt="Large View">
+    </div>
+
+    <footer>
+        <span class="footer-logo">V. PREMIUM</span>
+        <p class="footer-tag">The Complete Dudam Archive | Exclusively Yours</p>
+    </footer>
+
+    <script>
+        // --- 1. Generate the 93 images dynamically (for cleaner code) ---
+        const totalImages = 93;
+        const gallery = document.getElementById('galleryContainer');
+
+        for (let i = 1; i <= totalImages; i++) {
+            // Create the container
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            
+            // Apply the 'onclick' to view the large image
+            item.onclick = function() { openLightbox(`pic/dudam_${i}.jpg`); };
+
+            // Create the image
+            const img = document.createElement('img');
+            // Optimization: Use loading="lazy" so the browser doesn't load all 93 at once
+            img.loading = 'lazy'; 
+            img.src = `pic/dudam_${i}.jpg`;
+            img.alt = `Dudam #${i}`;
+
+            // Create the text overlay
+            const info = document.createElement('div');
+            info.className = 'gallery-item-info';
+            info.innerText = `archive [${i}] // view`;
+
+            // Nest them
+            item.appendChild(img);
+            item.appendChild(info);
+            gallery.appendChild(item);
+        }
+
+        // --- 2. Remove loading screen when DOM is ready ---
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loading');
+            loader.style.opacity = '0';
+            setTimeout(() => { loader.style.display = 'none'; }, 1000);
+        });
+
+        // --- 3. Scroll Animation (Intersection Observer) ---
+        // This makes images fade-in as you scroll down, saving processing power.
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Stop observing once visible to optimize
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, { threshold: 0.1 }); // Reveal when 10% visible
+
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            observer.observe(item);
+        });
+
+        // --- 4. Lightbox logic ---
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+
+        function openLightbox(imgSrc) {
+            lightboxImg.src = imgSrc;
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevents background scrolling
+        }
+
+        function closeLightbox() {
+            lightbox.style.display = 'none';
+            lightboxImg.src = '';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close lightbox on 'Esc' key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.style.display === 'flex') { closeLightbox(); }
+        });
+    </script>
+
+</body>
+</html>
