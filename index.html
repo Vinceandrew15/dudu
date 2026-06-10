@@ -4,103 +4,392 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Ultimate Collection | V. PREMIUM</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
             --accent: #d4af37;
-            --bg: #ffffff;
-            --text: #1a1a1a;
-            --light-gray: #f5f5f7;
-            --soft-pink: #fff0f0;
+            --accent-hover: #f1c40f;
+            --bg: #121212;
+            --surface: #1a1a1a;
+            --surface-hover: #242424;
+            --text: #ffffff;
+            --text-muted: #aaaaaa;
+            --border: rgba(255, 255, 255, 0.08);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Inter', sans-serif; 
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            overflow-x: hidden; 
+            min-height: 100vh; 
+            line-height: 1.6;
+        }
 
         /* Navigation Bar */
         nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 5%; border-bottom: 1px solid #eee;
-            position: sticky; top: 0; background: rgba(255,255,255,0.8);
-            backdrop-filter: blur(10px); z-index: 100;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding: 20px 8%; 
+            border-bottom: 1px solid var(--border);
+            position: sticky; 
+            top: 0; 
+            background: rgba(18, 18, 18, 0.85);
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 100;
         }
-        .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; letter-spacing: 1px; }
-        .nav-links { display: flex; gap: 15px; align-items: center; }
+        
+        .logo { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 1.4rem; 
+            font-weight: 600;
+            letter-spacing: 3px; 
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .logo:hover {
+            color: var(--accent);
+        }
+        
+        .nav-links { 
+            display: flex; 
+            gap: 20px; 
+            align-items: center; 
+        }
+        
         .nav-btn {
-            text-decoration: none; color: var(--text); font-size: 0.75rem; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px;
-            border: 1px solid #ddd; border-radius: 50px; transition: all 0.3s ease;
-            display: inline-block;
+            text-decoration: none; 
+            color: var(--text-muted); 
+            font-size: 0.75rem; 
+            font-weight: 600;
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            padding: 10px 24px;
+            border: 1px solid var(--border); 
+            border-radius: 50px; 
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            background: transparent;
         }
-        .nav-btn:hover { background-color: var(--text); color: white; transform: translateY(-2px); }
+        
+        .nav-btn:hover { 
+            background-color: var(--text); 
+            color: var(--bg); 
+            border-color: var(--text);
+            transform: translateY(-2px); 
+        }
 
-        /* Main Product Section */
+        /* Main Product Section Wrapper */
         .product-container {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
-            padding: 60px 10%; max-width: 1400px; margin: 0 auto; align-items: start;
+            display: grid; 
+            grid-template-columns: 1.1fr 0.9fr; 
+            gap: 80px;
+            padding: 80px 8%; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            align-items: start;
         }
 
-        /* Gallery Styling */
-        .product-gallery { display: flex; flex-direction: column; gap: 20px; width: 100%; }
-        .main-img {
-            background: var(--light-gray); border-radius: 12px; overflow: hidden;
-            border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            position: relative; width: 100%; display: flex; align-items: center; justify-content: center;
+        /* Premium Aspect-Ratio Gallery */
+        .product-gallery { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 24px; 
+            width: 100%; 
         }
-        .main-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
-        .main-img:hover img { transform: scale(1.05); }
+        
+        .img-wrapper {
+            background: var(--surface); 
+            border-radius: 16px; 
+            overflow: hidden;
+            border: 1px solid var(--border); 
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative; 
+            width: 100%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+        }
+        
+        .img-wrapper img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            display: block; 
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1); 
+        }
+        
+        .img-wrapper:hover img { 
+            transform: scale(1.04); 
+        }
+        
+        .gallery-grid {
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 24px;
+        }
 
-        /* Right Info Section */
-        .product-details { display: flex; flex-direction: column; padding-top: 20px; }
-        .category { text-transform: uppercase; color: #888; font-size: 0.75rem; letter-spacing: 2px; margin-bottom: 10px; }
-        h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 15px; color: var(--text); line-height: 1.1; }
-        .price { font-size: 1.5rem; color: var(--accent); margin-bottom: 25px; font-weight: 600; }
-        .description { line-height: 1.8; color: #555; margin-bottom: 30px; font-size: 1.05rem; }
+        /* Right Product Info Column */
+        .product-details { 
+            display: flex; 
+            flex-direction: column; 
+            position: sticky;
+            top: 120px;
+        }
+        
+        .category { 
+            text-transform: uppercase; 
+            color: var(--accent); 
+            font-size: 0.75rem; 
+            font-weight: 600;
+            letter-spacing: 3px; 
+            margin-bottom: 16px; 
+        }
+        
+        h1 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: clamp(2.2rem, 4vw, 3.2rem); 
+            margin-bottom: 12px; 
+            color: var(--text); 
+            line-height: 1.15; 
+            font-weight: 400;
+        }
+        
+        .price { 
+            font-size: 1.6rem; 
+            color: var(--text); 
+            margin-bottom: 30px; 
+            font-weight: 300; 
+            font-style: italic;
+            letter-spacing: 0.5px;
+        }
+        
+        .description { 
+            line-height: 1.8; 
+            color: var(--text-muted); 
+            margin-bottom: 35px; 
+            font-size: 1.05rem; 
+            font-weight: 300;
+        }
 
-        .specs { border-top: 1px solid #eee; padding-top: 25px; margin-bottom: 35px; }
-        .spec-item { display: flex; margin-bottom: 12px; font-size: 0.95rem; }
-        .spec-label { font-weight: 600; width: 130px; color: var(--text); }
+        .specs { 
+            border-top: 1px solid var(--border); 
+            border-bottom: 1px solid var(--border);
+            padding: 25px 0; 
+            margin-bottom: 40px; 
+        }
+        
+        .spec-item { 
+            display: flex; 
+            margin-bottom: 14px; 
+            font-size: 0.95rem; 
+        }
+        
+        .spec-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .spec-label { 
+            font-weight: 500; 
+            width: 140px; 
+            color: var(--accent); 
+            letter-spacing: 0.5px;
+        }
+        
+        .spec-value {
+            color: var(--text);
+            font-weight: 300;
+        }
 
-        /* CTA Buttons */
-        .actions { display: flex; gap: 15px; margin-bottom: 40px; }
+        /* Elegant Call to Actions */
+        .actions { 
+            display: flex; 
+            gap: 20px; 
+        }
+        
         .btn {
-            flex: 1; padding: 20px; border: none; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 2px; font-weight: 600;
-            font-size: 0.85rem; transition: 0.3s; border-radius: 4px; text-align: center;
+            width: 100%;
+            padding: 22px; 
+            border: none; 
+            cursor: pointer;
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            font-weight: 600;
+            font-size: 0.8rem; 
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
+            border-radius: 8px; 
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
-        .btn-primary { background: var(--text); color: white; }
-        .btn-primary:hover { background: #333; box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        
+        .btn-primary { 
+            background: var(--text); 
+            color: var(--bg); 
+        }
+        
+        .btn-primary:hover { 
+            background: #f0f0f0; 
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(255,255,255,0.1); 
+        }
 
-        /* Express Devotion Section */
+        /* Express Devotion Section Wrapper */
         .special-feature {
-            grid-column: 1 / -1; margin-top: 40px; border-top: 1px solid #eee;
-            padding: 80px 10%; text-align: center; background: var(--light-gray);
-            border-radius: 12px;
+            grid-column: 1 / -1; 
+            margin-top: 60px; 
+            border: 1px solid var(--border);
+            padding: 80px 10%; 
+            text-align: center; 
+            background: linear-gradient(180deg, var(--surface) 0%, #151515 100%);
+            border-radius: 20px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
         }
-        .special-feature h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 20px; }
-        .special-feature p { max-width: 600px; margin: 0 auto 30px; color: #666; font-style: italic; }
+        
+        .special-feature h2 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 2.6rem; 
+            margin-bottom: 20px; 
+            font-weight: 400;
+        }
+        
+        .special-feature p { 
+            max-width: 650px; 
+            margin: 0 auto 40px; 
+            color: var(--text-muted); 
+            font-style: italic; 
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .btn-accent {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            max-width: 340px;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .btn-accent:hover:not(:disabled) {
+            background: var(--accent);
+            color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(212, 175, 55, 0.2);
+        }
+        
+        .btn-accent:disabled {
+            border-color: var(--border);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+        
+        .status-msg-box {
+            height: 20px;
+            margin-top: 24px;
+        }
+        
+        .status-msg { 
+            font-size: 0.8rem; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            color: var(--accent); 
+            font-weight: 600;
+            animation: pulse 2s infinite ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
 
-        /* Success Overlay */
+        /* Perfect Full-Screen Overlay Container */
         #overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.92); display: none; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 1000;
-            color: white; text-align: center; backdrop-filter: blur(12px); padding: 20px;
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background: rgba(10, 10, 10, 0.96); 
+            display: none; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            z-index: 1000;
+            color: white; 
+            text-align: center; 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            padding: 24px;
         }
-        .floating-heart { font-size: 5rem; animation: float 2.5s infinite ease-in-out; margin-bottom: 20px; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        
+        .floating-heart { 
+            font-size: 5.5rem; 
+            animation: float 3s infinite ease-in-out; 
+            margin-bottom: 24px; 
+            filter: drop-shadow(0 10px 20px rgba(212,175,55,0.3));
+        }
+        
+        @keyframes float { 
+            0%, 100% { transform: translateY(0) scale(1); } 
+            50% { transform: translateY(-15px) scale(1.05); } 
+        }
+        
+        .overlay-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+        
+        .overlay-desc {
+            font-style: italic; 
+            font-size: 1.25rem; 
+            color: var(--text-muted);
+            max-width: 500px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            max-width: 220px;
+        }
+        
+        .btn-outline:hover {
+            border-color: white;
+            background: rgba(255,255,255,0.05);
+        }
 
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .product-container { gap: 50px; padding: 60px 5%; }
+        }
+        
         @media (max-width: 900px) {
-            .product-container { grid-template-columns: 1fr; padding: 40px 5%; }
+            .product-container { grid-template-columns: 1fr; padding: 40px 6%; gap: 40px; }
             .product-gallery { order: 1; }
-            .product-details { order: 2; }
+            .product-details { order: 2; position: static; }
+            .special-feature { padding: 60px 6%; }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">V. PREMIUM</div>
+        <a href="index.html" class="logo">V. PREMIUM</a>
         <div class="nav-links">
             <a href="ourstory.html" class="nav-btn">Our Story</a>        
             <a href="collection.html" class="nav-btn">Collection</a>
@@ -109,14 +398,14 @@
 
     <main class="product-container">
         <section class="product-gallery">
-            <div class="main-img" style="aspect-ratio: 1/1;">
+            <div class="img-wrapper" style="aspect-ratio: 1/1;">
                 <img src="pic/dudam_3.jpg" alt="Us Main">
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div class="main-img" style="aspect-ratio: 4/5;">
+            <div class="gallery-grid">
+                <div class="img-wrapper" style="aspect-ratio: 4/5;">
                     <img src="pic/dudam_1.jpg" alt="Memory 1">
                 </div>
-                <div class="main-img" style="aspect-ratio: 4/5;">
+                <div class="img-wrapper" style="aspect-ratio: 4/5;">
                     <img src="pic/dudam_4.jpg" alt="Memory 2">
                 </div>
             </div>
@@ -132,9 +421,18 @@
             </p>
 
             <div class="specs">
-                <div class="spec-item"><span class="spec-label">Material</span> <span>Pure Sincerity & Dreams</span></div>
-                <div class="spec-item"><span class="spec-label">Foundation</span> <span>Through Jehovah's Love</span></div>
-                <div class="spec-item"><span class="spec-label">Origin</span> <span>Deeply from me to you</span></div>
+                <div class="spec-item">
+                    <span class="spec-label">Material</span> 
+                    <span class="spec-value">Pure Sincerity & Dreams</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Foundation</span> 
+                    <span class="spec-value">Through Jehovah's Love</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Origin</span> 
+                    <span class="spec-value">Deeply from me to you</span>
+                </div>
             </div>
 
             <div class="actions">
@@ -143,37 +441,37 @@
         </section>
 
         <section class="special-feature">
-            <span class="category">Premium Service</span>
+            <p class="category" style="margin-bottom: 12px;">Premium Service</p>
             <h2>Express Devotion</h2>
             <p>"Through Jehovah's love, I found love in you too. This is a direct line to your heart."</p>
             
-            <button id="loveBtn" class="btn btn-primary" style="max-width: 320px; margin: 0 auto; display: block;" onclick="sendLoveEmail()">
+            <button id="loveBtn" class="btn btn-accent" onclick="sendLoveEmail()">
                 Send "I Love You" to Gmail
             </button>
             
-            <p id="statusMsg" style="margin-top: 20px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); display: none; font-weight: 600;">
-                Message Dispatched via Premium Courier...
-            </p>
+            <div class="status-msg-box">
+                <p id="statusMsg" class="status-msg" style="display: none;">
+                    Message Dispatched via Premium Courier...
+                </p>
+            </div>
         </section>
     </main>
 
-    <div id="overlay">
+    <div id="overlay" onclick="hideSuccess()">
         <div class="floating-heart">❤️</div>
-        <h1 style="color: var(--accent); margin-bottom: 10px;">Order Confirmed!</h1>
-        <p style="font-style: italic; font-size: 1.2rem; opacity: 0.9;">"You have successfully added my love to your heart."</p>
-        <button class="btn" style="background: transparent; border: 1px solid white; color: white; margin-top: 30px; max-width: 200px;" onclick="hideSuccess()">Return</button>
+        <h2 class="overlay-title">Order Confirmed!</h2>
+        <p class="overlay-desc">"You have successfully added my love to your heart."</p>
+        <button class="btn btn-outline" onclick="hideSuccess()">Return</button>
     </div>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
-    
         // --- 1. Initialize EmailJS ---
         (function(){
-            // FIXED: Added quotes around the public key
             emailjs.init("HDdgFpnelrQkSqEew"); 
         })();
 
-        // --- 2. Send Email Function ---
+        // --- 2. Send Email Transaction Handler ---
         function sendLoveEmail() {
             const btn = document.getElementById('loveBtn');
             const status = document.getElementById('statusMsg');
@@ -183,36 +481,35 @@
 
             const templateParams = {
                 to_name: "Jornadette Cos (Love, Juday, Dudu, Dudam, Judy, Baby)",
-                // Note: Ensure your EmailJS template uses {{to_name}} and {{message}} variables
                 message: "This is a premium notification: I love you more than words can express. Found through Jehovah's love, kept in my heart forever."
             };
 
-            // Using your specific Service ID and Template ID
             emailjs.send('dudam', 'template_k3ztujo', templateParams)
                 .then(function() {
                     status.style.display = 'block';
                     status.innerText = "Delivered to her Inbox";
                     btn.innerText = "Sent Successfully";
+                    btn.style.borderColor = "transparent";
                     btn.style.background = "#d4af37";
-                    btn.style.color = "#000";
+                    btn.style.color = "#121212";
                 }, function(error) {
                     btn.innerText = "Error: Check Console";
                     btn.disabled = false;
                     console.error("EmailJS Error:", error);
-                    alert("Submission failed. Make sure 'dudam' is the Service ID and 'template_k3ztujo' is the Template ID in your dashboard.");
+                    alert("Submission failed. Verify Service ID, Template ID, and public credentials in your control panel dashboard.");
                 });
         }
 
-        // --- 3. Overlay Logic ---
+        // --- 3. View Port State Management Modals ---
         function showSuccess() {
             document.getElementById('overlay').style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
+        
         function hideSuccess() {
             document.getElementById('overlay').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
-    
     </script>
 </body>
 </html>
