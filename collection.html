@@ -8,7 +8,7 @@
     <style>
         :root {
             --accent: #d4af37;
-            --bg: #1a1a1a; /* Dark background to make photos POP */
+            --bg: #1a1a1a; 
             --text: #ffffff;
             --light-gray: rgba(255, 255, 255, 0.05);
             --overlay-bg: rgba(0, 0, 0, 0.95);
@@ -51,10 +51,10 @@
         .collection-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 20px; color: #fff; }
         .collection-hero p { font-style: italic; color: #aaa; font-size: 1.2rem; line-height: 1.6; border-left: 3px solid var(--accent); padding-left: 20px; display: inline-block; text-align: left; }
 
-        /* Main Collection Grid - Optimized for 93 images */
+        /* Main Collection Grid */
         .collection-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Masonry-like stacking */
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
             gap: 20px;
             padding: 0 5% 100px;
             max-width: 1600px;
@@ -67,23 +67,22 @@
             overflow: hidden;
             position: relative;
             cursor: zoom-in;
-            opacity: 0; /* Hidden by default for intersection observer */
+            opacity: 0; 
             transform: translateY(20px);
             transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
             border: 1px solid rgba(255,255,255,0.03);
-            aspect-ratio: 1/1; /* Modern squared look */
+            aspect-ratio: 1/1; 
         }
 
-        /* Responsive ratios for masonry feel */
-        .gallery-item:nth-child(3n) { aspect-ratio: 4/5; } /* Tall */
-        .gallery-item:nth-child(4n) { aspect-ratio: 5/4; } /* Wide */
+        .gallery-item:nth-child(3n) { aspect-ratio: 4/5; } 
+        .gallery-item:nth-child(4n) { aspect-ratio: 5/4; } 
 
         .gallery-item.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .gallery-item img {
+        .gallery-item img, .gallery-item video {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -91,20 +90,20 @@
             transition: transform 0.6s ease;
         }
 
-        .gallery-item:hover img {
+        .gallery-item:hover img, .gallery-item:hover video {
             transform: scale(1.08);
         }
 
-        /* Item Overlay (e.g., 'View Large') */
+        /* Item Overlay */
         .gallery-item-info {
             position: absolute; bottom: 0; left: 0; width: 100%;
             padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8));
             color: #fff; text-align: center; font-size: 0.7rem; text-transform: uppercase;
-            letter-spacing: 2px; opacity: 0; transition: opacity 0.3s;
+            letter-spacing: 2px; opacity: 0; z-index: 2; transition: opacity 0.3s;
         }
         .gallery-item:hover .gallery-item-info { opacity: 1; }
 
-        /* Lightbox Overlay for viewing large version */
+        /* Lightbox Overlay */
         #lightbox {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--overlay-bg); z-index: 1000;
@@ -112,13 +111,11 @@
             backdrop-filter: blur(10px); cursor: zoom-out;
             animation: fadeInLightbox 0.5s ease forwards;
         }
-        #lightbox img { max-width: 90%; max-height: 90%; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
-        .close-lightbox { position: absolute; top: 20px; right: 20px; font-size: 2rem; color: #fff; cursor: pointer; }
+        #lightbox img, #lightbox video { max-width: 90%; max-height: 90%; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+        .close-lightbox { position: absolute; top: 20px; right: 20px; font-size: 2rem; color: #fff; cursor: pointer; z-index: 1010; }
 
-        /* Animations */
         @keyframes fadeInLightbox { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Footer */
         footer { padding: 60px 5%; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; background: rgba(0,0,0,0.5); }
         .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 15px; display: block; color: #fff; }
         .footer-tag { font-size: 0.8rem; color: #777; text-transform: uppercase; letter-spacing: 2px; }
@@ -126,7 +123,7 @@
         @media (max-width: 800px) {
             .collection-hero { padding: 80px 5% 40px; }
             .collection-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
-            .gallery-item:nth-child(n) { aspect-ratio: 1/1; } /* Reset aspect ratio on mobile for clean look */
+            .gallery-item:nth-child(n) { aspect-ratio: 1/1; } 
         }
     </style>
 </head>
@@ -149,7 +146,7 @@
     <main id="collection-page">
         <section class="collection-hero">
             <h1>The Dudam Archive</h1>
-            <p>"A curated sequence.<br>Ninety-three proofs of perfection."</p>
+            <p>"A curated sequence.<br>One hundred fifty-five proofs of perfection."</p>
         </section>
 
         <section class="collection-grid" id="galleryContainer">
@@ -158,7 +155,7 @@
 
     <div id="lightbox" onclick="closeLightbox()">
         <span class="close-lightbox">&times;</span>
-        <img id="lightboxImg" src="" alt="Large View">
+        <div id="lightboxContent" onclick="event.stopPropagation()"></div>
     </div>
 
     <footer>
@@ -167,32 +164,48 @@
     </footer>
 
     <script>
-        // --- 1. Generate the 93 images dynamically (for cleaner code) ---
-        const totalImages = 93;
+        // --- 1. Define distinct asset configurations ---
+        const totalImages = 153;
+        const totalVideos = 2;
         const gallery = document.getElementById('galleryContainer');
 
+        // Loop to generate Images (1 to 153)
         for (let i = 1; i <= totalImages; i++) {
-            // Create the container
+            createMediaItem(`pic/dudam_${i}.jpg`, 'image', `archive [${i}]`);
+        }
+
+        // Loop to generate Videos (1 to 2)
+        // Adjust the path format ('pic/video_1.mp4' or whatever matching file structure you use)
+        for (let v = 1; v <= totalVideos; v++) {
+            createMediaItem(`pic/video_${v}.mp4`, 'video', `motion [${v}]`);
+        }
+
+        // Reusable DOM factory method to handle layout items cleanly
+        function createMediaItem(src, type, label) {
             const item = document.createElement('div');
             item.className = 'gallery-item';
+            item.onclick = function() { openLightbox(src, type); };
+
+            let mediaElement;
+            if (type === 'video') {
+                mediaElement = document.createElement('video');
+                mediaElement.muted = true;
+                mediaElement.autoplay = true;
+                mediaElement.loop = true;
+                mediaElement.playsInline = true;
+            } else {
+                mediaElement = document.createElement('img');
+                mediaElement.loading = 'lazy'; 
+            }
             
-            // Apply the 'onclick' to view the large image
-            item.onclick = function() { openLightbox(`pic/dudam_${i}.jpg`); };
+            mediaElement.src = src;
+            mediaElement.alt = label;
 
-            // Create the image
-            const img = document.createElement('img');
-            // Optimization: Use loading="lazy" so the browser doesn't load all 93 at once
-            img.loading = 'lazy'; 
-            img.src = `pic/dudam_${i}.jpg`;
-            img.alt = `Dudam #${i}`;
-
-            // Create the text overlay
             const info = document.createElement('div');
             info.className = 'gallery-item-info';
-            info.innerText = `archive [${i}] // view`;
+            info.innerText = `${label} // view`;
 
-            // Nest them
-            item.appendChild(img);
+            item.appendChild(mediaElement);
             item.appendChild(info);
             gallery.appendChild(item);
         }
@@ -202,45 +215,57 @@
             const loader = document.getElementById('loading');
             loader.style.opacity = '0';
             setTimeout(() => { loader.style.display = 'none'; }, 1000);
+            
+            // Re-bind items generated to intersection observer
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                observer.observe(item);
+            });
         });
 
         // --- 3. Scroll Animation (Intersection Observer) ---
-        // This makes images fade-in as you scroll down, saving processing power.
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Stop observing once visible to optimize
                     observer.unobserve(entry.target); 
                 }
             });
-        }, { threshold: 0.1 }); // Reveal when 10% visible
+        }, { threshold: 0.1 });
 
-        document.querySelectorAll('.gallery-item').forEach(item => {
-            observer.observe(item);
-        });
-
-        // --- 4. Lightbox logic ---
+        // --- 4. Lightbox logic supporting both image & video nodes ---
         const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxContent = document.getElementById('lightboxContent');
 
-        function openLightbox(imgSrc) {
-            lightboxImg.src = imgSrc;
+        function openLightbox(src, type) {
+            lightboxContent.innerHTML = ''; // Flush previous preview
+            
+            let element;
+            if (type === 'video') {
+                element = document.createElement('video');
+                element.controls = true;
+                element.autoplay = true;
+                element.style.maxWidth = '90vw';
+                element.style.maxHeight = '90vh';
+            } else {
+                element = document.createElement('img');
+            }
+            
+            element.src = src;
+            lightboxContent.appendChild(element);
+            
             lightbox.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Prevents background scrolling
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeLightbox() {
             lightbox.style.display = 'none';
-            lightboxImg.src = '';
+            lightboxContent.innerHTML = '';
             document.body.style.overflow = 'auto';
         }
 
-        // Close lightbox on 'Esc' key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && lightbox.style.display === 'flex') { closeLightbox(); }
         });
     </script>
-
 </body>
 </html>
